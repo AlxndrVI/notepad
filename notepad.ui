@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>303</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,8 +80,16 @@
     <addaction name="actionSelect_All"/>
     <addaction name="actionAdd_Time_Date"/>
    </widget>
+   <widget class="QMenu" name="menuF_ormat">
+    <property name="title">
+     <string>F&amp;ormat</string>
+    </property>
+    <addaction name="actionWord_Wrap"/>
+    <addaction name="actionFont"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuF_ormat"/>
   </widget>
   <action name="actionNew">
    <property name="text">
@@ -223,6 +231,22 @@
    </property>
    <property name="shortcut">
     <string>F5</string>
+   </property>
+  </action>
+  <action name="actionWord_Wrap">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Word Wrap</string>
+   </property>
+  </action>
+  <action name="actionFont">
+   <property name="text">
+    <string>Font...</string>
    </property>
   </action>
  </widget>

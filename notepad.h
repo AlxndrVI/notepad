@@ -75,6 +75,8 @@ private slots:
 
     void Goto_triggered(int);
 
+    void on_actionWord_Wrap_toggled(bool arg1);
+
 private:
 
     Ui::Notepad *ui;

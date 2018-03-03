@@ -60,7 +60,7 @@ Notepad::Notepad(QWidget *parent) :
     ui->textEdit->setPalette(p);
     ui->textEdit->installEventFilter(this);
 
-    ui->textEdit->setWordWrapMode(QTextOption::WrapMode::NoWrap);
+    on_actionWord_Wrap_toggled(false);
 }
 
 Notepad::~Notepad()
@@ -281,10 +281,18 @@ void Notepad::Goto_triggered(int row)
     row = qMax(row, ui->textEdit->document()->blockCount()) - 1;
     QTextCursor cur = ui->textEdit->textCursor();
     cur.movePosition(QTextCursor::Start);
-    cur.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, row - 1);
+    cur.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, row);
     ui->textEdit->setTextCursor(cur);
     /*QTextCursor cur = ui->textEdit->textCursor();
-    QTextBlock block = ui->textEdit->document()->findBlockByLineNumber(row - 1);
+    QTextBlock block = ui->textEdit->document()->findBlockByLineNumber(row);
     cur.setPosition(block.position());
     ui->textEdit->setTextCursor(cur);*/
+}
+
+void Notepad::on_actionWord_Wrap_toggled(bool arg1)
+{
+    if (arg1)
+        ui->textEdit->setWordWrapMode(QTextOption::WrapMode::WordWrap);
+    else
+        ui->textEdit->setWordWrapMode(QTextOption::WrapMode::NoWrap);
 }
