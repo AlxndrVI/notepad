@@ -15,6 +15,12 @@ public:
     explicit GoToLine(QWidget *parent = 0);
     ~GoToLine();
 
+signals:
+    void goTo(int);
+
+private slots:
+    void on_gotoButton_clicked();
+
 private:
     Ui::GoToLine *ui;
 };

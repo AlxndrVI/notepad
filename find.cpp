@@ -14,7 +14,7 @@ Find::~Find()
     delete ui;
 }
 
-void Find::on_pushButton_FindNext_clicked()
+void Find::on_FindNextButton_clicked()
 {
     QTextDocument::FindFlags findFlags = QTextDocument::FindFlags();
     if(ui->radioButton->isChecked()) findFlags.setFlag(QTextDocument::FindBackward);
@@ -22,8 +22,8 @@ void Find::on_pushButton_FindNext_clicked()
     emit findText(ui->lineEdit->text(), findFlags);
 }
 
-void Find::on_lineEdit_textChanged(const QString &arg1)
+void Find::on_lineEdit_textChanged(const QString&)
 {
-    ui->pushButton_FindNext->setEnabled(
+    ui->FindNextButton->setEnabled(
                 !ui->lineEdit->text().isEmpty());
 }

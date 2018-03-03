@@ -1,6 +1,22 @@
+#include <QKeyEvent>
 #include "notepad.h"
 #include "ui_notepad.h"
 #include "find.h"
+#include "gotoline.h"
+
+bool Notepad::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->textEdit && event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->matches(QKeySequence::Undo))
+        {
+            on_actionUndo_triggered();
+            return true;
+        }
+    }
+    return false;
+}
 
 Notepad::Notepad(QWidget *parent) :
     QMainWindow(parent),
@@ -26,6 +42,15 @@ Notepad::Notepad(QWidget *parent) :
     QObject::connect(replacer, SIGNAL(replaceText(QString)), this, SLOT(Replace_triggered(QString)));
     QObject::connect(replacer, SIGNAL(replaceAll(QString,QString,QTextDocument::FindFlags)), this, SLOT(ReplaceAll_triggered(QString,QString,QTextDocument::FindFlags)));
 
+    gotoliner = new GoToLine(this);
+    gotoliner->setModal(false);
+    gotoliner->setWindowFlags(Qt::Dialog
+                            | Qt::MSWindowsFixedSizeDialogHint
+                            | Qt::WindowTitleHint
+                            | Qt::WindowCloseButtonHint
+                            | Qt::CustomizeWindowHint);
+    QObject::connect(gotoliner, SIGNAL(goTo(int)), this, SLOT(Goto_triggered(int)));
+
     ui->setupUi(this);
 
     this->setCentralWidget(ui->textEdit);
@@ -33,6 +58,9 @@ Notepad::Notepad(QWidget *parent) :
     p.setColor(QPalette::Inactive, QPalette::HighlightedText, p.color(QPalette::Active, QPalette::HighlightedText));
     p.setColor(QPalette::Inactive, QPalette::Highlight, p.color(QPalette::Active, QPalette::Highlight));
     ui->textEdit->setPalette(p);
+    ui->textEdit->installEventFilter(this);
+
+    ui->textEdit->setWordWrapMode(QTextOption::WrapMode::NoWrap);
 }
 
 Notepad::~Notepad()
@@ -132,7 +160,13 @@ void Notepad::on_actionPrint_triggered()
 
 void Notepad::on_actionUndo_triggered()
 {
-    ui->textEdit->undo();
+    if (undoAvailable)
+        ui->textEdit->undo();
+    else if (redoAvailable)
+    {
+        QTextCursor cursor = ui->textEdit->textCursor();
+        ui->textEdit->redo();
+    }
 }
 
 void Notepad::on_actionCut_triggered()
@@ -218,4 +252,39 @@ void Notepad::ReplaceAll_triggered(QString what, QString with, QTextDocument::Fi
             ui->textEdit->textCursor().insertText(with);
     }
     ui->textEdit->textCursor().endEditBlock();
+}
+
+void Notepad::on_textEdit_undoAvailable(bool b)
+{
+    undoAvailable = b;
+    activate_actionUndo();
+}
+
+void Notepad::on_textEdit_redoAvailable(bool b)
+{
+    redoAvailable = b;
+    activate_actionUndo();
+}
+
+void Notepad::activate_actionUndo()
+{
+    ui->actionUndo->setEnabled(undoAvailable | redoAvailable);
+}
+
+void Notepad::on_actionGoto_triggered()
+{
+    gotoliner->show();
+}
+
+void Notepad::Goto_triggered(int row)
+{
+    row = qMax(row, ui->textEdit->document()->blockCount()) - 1;
+    QTextCursor cur = ui->textEdit->textCursor();
+    cur.movePosition(QTextCursor::Start);
+    cur.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, row - 1);
+    ui->textEdit->setTextCursor(cur);
+    /*QTextCursor cur = ui->textEdit->textCursor();
+    QTextBlock block = ui->textEdit->document()->findBlockByLineNumber(row - 1);
+    cur.setPosition(block.position());
+    ui->textEdit->setTextCursor(cur);*/
 }

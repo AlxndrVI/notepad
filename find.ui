@@ -100,40 +100,40 @@
     </property>
    </widget>
   </widget>
-  <widget class="QSplitter" name="splitter">
+  <widget class="QPushButton" name="FindNextButton">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>273</x>
      <y>9</y>
      <width>75</width>
-     <height>52</height>
+     <height>23</height>
     </rect>
    </property>
-   <property name="orientation">
-    <enum>Qt::Vertical</enum>
+   <property name="text">
+    <string>&amp;Find Next</string>
    </property>
-   <property name="handleWidth">
-    <number>6</number>
+  </widget>
+  <widget class="QPushButton" name="RejectButton">
+   <property name="geometry">
+    <rect>
+     <x>273</x>
+     <y>38</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
    </property>
-   <widget class="QPushButton" name="pushButton_FindNext">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="text">
-     <string>&amp;Find Next</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_Reject">
-    <property name="text">
-     <string>Cancel</string>
-    </property>
-   </widget>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
   </widget>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton_Reject</sender>
+   <sender>RejectButton</sender>
    <signal>clicked()</signal>
    <receiver>Find</receiver>
    <slot>reject()</slot>

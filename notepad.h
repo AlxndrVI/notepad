@@ -3,6 +3,7 @@
 
 #include "find.h"
 #include "findandreplace.h"
+#include "gotoline.h"
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -66,14 +67,27 @@ private slots:
 
     void on_actionSelect_All_triggered();
 
+    void on_textEdit_undoAvailable(bool b);
+
+    void on_textEdit_redoAvailable(bool b);
+
+    void on_actionGoto_triggered();
+
+    void Goto_triggered(int);
+
 private:
+
     Ui::Notepad *ui;
     Find *finder;
     FindAndReplace *replacer;
+    GoToLine *gotoliner;
     QString currentFile;
     QString findText;
     QTextDocument::FindFlags findFlags;
-
+    bool undoAvailable = false;
+    bool redoAvailable = false;
+    bool eventFilter(QObject *watched, QEvent *event);
+    void activate_actionUndo();
 };
 
 #endif // NOTEPAD_H

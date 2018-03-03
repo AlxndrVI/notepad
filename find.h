@@ -20,7 +20,7 @@ signals:
     void findText(QString what, QTextDocument::FindFlags findFlags);
 
 private slots:
-    void on_pushButton_FindNext_clicked();
+    void on_FindNextButton_clicked();
 
     void on_lineEdit_textChanged(const QString &arg1);
 

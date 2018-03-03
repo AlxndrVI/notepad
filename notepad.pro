@@ -27,14 +27,17 @@ SOURCES += \
         main.cpp \
         notepad.cpp \
         find.cpp \
-    findandreplace.cpp
+    findandreplace.cpp \
+    gotoline.cpp
 
 HEADERS += \
         notepad.h \
         find.h \
-    findandreplace.h
+    findandreplace.h \
+    gotoline.h
 
 FORMS += \
         notepad.ui \
         find.ui \
-    findandreplace.ui
+    findandreplace.ui \
+    gotoline.ui
